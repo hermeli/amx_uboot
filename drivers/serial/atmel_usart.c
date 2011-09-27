@@ -16,7 +16,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 #include <common.h>
-#include <watchdog.h>
 
 #include <asm/io.h>
 #include <asm/arch/clk.h>
@@ -88,8 +87,7 @@ void serial_puts(const char *s)
 
 int serial_getc(void)
 {
-	while (!(usart3_readl(CSR) & USART3_BIT(RXRDY)))
-		 WATCHDOG_RESET();
+	while (!(usart3_readl(CSR) & USART3_BIT(RXRDY))) ;
 	return usart3_readl(RHR);
 }
 

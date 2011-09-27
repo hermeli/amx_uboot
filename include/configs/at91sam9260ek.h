@@ -28,8 +28,8 @@
 #define __CONFIG_H
 
 /* ARM asynchronous clock */
-#define AT91_MAIN_CLOCK		198656000	/* from 18.432 MHz crystal */
-#define AT91_MASTER_CLOCK	99328000	/* peripheral = main / 2 */
+#define AT91_MAIN_CLOCK		720000000	/* from 25.000 MHz crystal */
+#define AT91_MASTER_CLOCK	90000000	/* peripheral clock */
 #define CFG_HZ			1000000		/* 1us resolution */
 
 #define AT91_SLOW_CLOCK		32768	/* slow clock */
@@ -126,6 +126,10 @@
 
 #define CFG_MEMTEST_START		PHYS_SDRAM
 #define CFG_MEMTEST_END			0x23e00000
+
+#undef CFG_USE_DATAFLASH_CS0
+#define CFG_USE_DATAFLASH_CS1		1
+#undef CFG_USE_NANDFLASH
 
 #ifdef CFG_USE_DATAFLASH_CS0
 

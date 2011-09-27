@@ -128,8 +128,6 @@ static void at91sam9263ek_spi_hw_init(void)
 #ifdef CONFIG_MACB
 static void at91sam9263ek_macb_hw_init(void)
 {
-	unsigned long rstc;
-	
 	/* Enable clock */
 	at91_sys_write(AT91_PMC_PCER, 1 << AT91SAM9263_ID_EMAC);
 
@@ -147,8 +145,6 @@ static void at91sam9263ek_macb_hw_init(void)
 	       pin_to_mask(AT91_PIN_PE26),
 	       pin_to_controller(AT91_PIN_PE0) + PIO_PUDR);
 
-	rstc = at91_sys_read(AT91_RSTC_MR);
-	
 	/* Need to reset PHY -> 500ms reset */
 	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
 				     (AT91_RSTC_ERSTL & (0x0D << 8)) |
@@ -161,7 +157,7 @@ static void at91sam9263ek_macb_hw_init(void)
 
 	/* Restore NRST value */
 	at91_sys_write(AT91_RSTC_MR, AT91_RSTC_KEY |
-				     (rstc) |
+				     (AT91_RSTC_ERSTL & (0x0 << 8)) |
 				     AT91_RSTC_URSTEN);
 
 	/* Re-enable pull-up */

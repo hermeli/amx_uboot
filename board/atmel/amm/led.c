@@ -1,7 +1,6 @@
 /*
- * (C) Copyright 2007-2008
- * Stelian Pop <stelian.pop@leadtechdesign.com>
- * Lead Tech Design <www.leadtechdesign.com>
+ * Stefan Wyss (swyss@kbr.kaba.com)
+ * KABA AG, CC EAC
  *
  * See file CREDITS for list of people who contributed to this
  * project.
@@ -23,14 +22,42 @@
  */
 
 #include <common.h>
-#include <asm/arch/hardware.h>
+#include <asm/arch/at91sam9260.h>
+#include <asm/arch/at91_pmc.h>
+#include <asm/arch/gpio.h>
+#include <asm/arch/io.h>
 
-extern int macb_eth_initialize(int id, void *regs, unsigned int phy_addr);
+#define	RED_LED		AT91_PIN_PC7	/* this is the power led */
+#define	GREEN_LED	AT91_PIN_PC9	/* this is the user led */
 
-#if defined(CONFIG_MACB) && defined(CONFIG_CMD_NET)
-void at91sam9_eth_initialize(bd_t *bi)
+void red_LED_on(void)
 {
-	// SW 25.07.2011, AMM PHY (ETH0) is at address 0x01 
-	macb_eth_initialize(0, (void *)AT91_BASE_EMAC, 0x01);
+	at91_set_gpio_value(RED_LED, 1);
 }
-#endif
+
+void red_LED_off(void)
+{
+	at91_set_gpio_value(RED_LED, 0);
+}
+
+void green_LED_on(void)
+{
+	at91_set_gpio_value(GREEN_LED, 0);
+}
+
+void green_LED_off(void)
+{
+	at91_set_gpio_value(GREEN_LED, 1);
+}
+
+void coloured_LED_init(void)
+{
+	/* Enable clock */
+	at91_sys_write(AT91_PMC_PCER, 1 << AT91SAM9260_ID_PIOC);
+
+	at91_set_gpio_output(RED_LED, 1);
+	at91_set_gpio_output(GREEN_LED, 1);
+
+	at91_set_gpio_value(RED_LED, 0);
+	at91_set_gpio_value(GREEN_LED, 1);
+}
