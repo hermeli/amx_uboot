@@ -239,6 +239,7 @@ LIBS += drivers/qe/qe.a
 endif
 LIBS += drivers/rtc/librtc.a
 LIBS += drivers/serial/libserial.a
+LIBS += drivers/watchdog/libwatchdog.a
 LIBS += drivers/usb/libusb.a
 LIBS += drivers/video/libvideo.a
 LIBS += common/libcommon.a

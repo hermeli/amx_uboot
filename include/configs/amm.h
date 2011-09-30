@@ -53,8 +53,10 @@
 #undef CONFIG_USART1
 #undef CONFIG_USART2
 #define CONFIG_USART3		1	/* USART 3 is DBGU */
-
 #define CONFIG_BOOTDELAY	3
+
+#define CONFIG_HW_WATCHDOG	1
+#define CONFIG_AT91SAM9_WATCHDOG	1
 
 /*
  * BOOTP options

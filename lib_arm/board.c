@@ -47,6 +47,7 @@
 #include <serial.h>
 #include <nand.h>
 #include <onenand_uboot.h>
+#include <watchdog.h>
 
 #ifdef CONFIG_DRIVER_SMC91111
 #include "../drivers/net/smc91111.h"
@@ -63,6 +64,8 @@ ulong monitor_flash_len;
 extern int  AT91F_DataflashInit(void);
 extern void dataflash_print_info(void);
 #endif
+
+extern void hw_watchdog_init(void);
 
 #ifndef CONFIG_IDENT_STRING
 #define CONFIG_IDENT_STRING ""
@@ -286,6 +289,10 @@ init_fnc_t *init_sequence[] = {
 	serial_init,		/* serial communications setup */
 	console_init_f,		/* stage 1 init of console */
 	display_banner,		/* say that we are here */
+	#if defined(CONFIG_HW_WATCHDOG)
+	hw_watchdog_init,       /* watchdog setup */
+	#endif
+
 #if defined(CONFIG_DISPLAY_CPUINFO)
 	print_cpuinfo,		/* display cpu info (and speed) */
 #endif

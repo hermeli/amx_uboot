@@ -26,6 +26,7 @@
 #include <malloc.h>
 #include <console.h>
 #include <exports.h>
+#include <watchdog.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -114,6 +115,7 @@ void serial_printf (const char *fmt, ...)
 
 int fgetc (int file)
 {
+	WATCHDOG_RESET();
 	if (file < MAX_FILES)
 		return stdio_devices[file]->getc ();
 

@@ -39,6 +39,7 @@
  * Hardware watchdog
  */
 #ifdef CONFIG_HW_WATCHDOG
+	extern void hw_watchdog_init(void);	
 	#if defined(__ASSEMBLY__)
 		#define WATCHDOG_RESET bl hw_watchdog_reset
 	#else

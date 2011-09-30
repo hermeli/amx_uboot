@@ -32,6 +32,7 @@
 #include <asm/arch/io.h>
 #if defined(CONFIG_RESET_PHY_R) && defined(CONFIG_MACB)
 #include <net.h>
+#include <watchdog.h>
 #endif
 
 DECLARE_GLOBAL_DATA_PTR;
@@ -139,7 +140,6 @@ int board_init(void)
 #ifdef CONFIG_MACB
 	amm_macb_hw_init();
 #endif
-
 	return 0;
 }
 
