@@ -39,6 +39,7 @@
 #include <asm/io.h>
 #include <asm/byteorder.h>
 #include <environment.h>
+#include <watchdog.h>
 #ifdef	CFG_FLASH_CFI_DRIVER
 
 /*
@@ -1277,6 +1278,7 @@ int write_buff (flash_info_t * info, uchar * src, ulong addr, ulong cnt)
 			return rc;
 
 		wp += i;
+		WATCHDOG_RESET();
 		FLASH_SHOW_PROGRESS(scale, dots, digit, i);
 	}
 

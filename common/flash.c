@@ -160,8 +160,7 @@ flash_write (char *src, ulong addr, ulong cnt)
 		short s_end = info->sector_count - 1;
 		for (i=0; i<info->sector_count; ++i) {
 			ulong e_addr = (i == s_end) ? b_end : info->start[i + 1];
-			WATCHDOG_RESET();
-
+			
 			if ((end >= info->start[i]) && (addr < e_addr) &&
 			    (info->protect[i] != 0) ) {
 				return (ERR_PROTECTED);
@@ -171,9 +170,8 @@ flash_write (char *src, ulong addr, ulong cnt)
 
 	/* finally write data to flash */
 	for (info = info_first; info <= info_last && cnt>0; ++info) {
-		ulong len;
-
-		WATCHDOG_RESET();
+		ulong len;   
+		
 		len = info->start[0] + info->size - addr;
 		if (len > cnt)
 			len = cnt;
