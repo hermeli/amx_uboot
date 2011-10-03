@@ -25,6 +25,7 @@
 
 #include <common.h>
 #include <flash.h>
+#include <watchdog.h>
 
 #if !defined(CFG_NO_FLASH)
 
@@ -158,6 +159,7 @@ flash_write (char *src, ulong addr, ulong cnt)
 		ulong b_end = info->start[0] + info->size;	/* bank end addr */
 		short s_end = info->sector_count - 1;
 		for (i=0; i<info->sector_count; ++i) {
+			WATCHDOG_RESET();
 			ulong e_addr = (i == s_end) ? b_end : info->start[i + 1];
 
 			if ((end >= info->start[i]) && (addr < e_addr) &&
@@ -171,6 +173,7 @@ flash_write (char *src, ulong addr, ulong cnt)
 	for (info = info_first; info <= info_last && cnt>0; ++info) {
 		ulong len;
 
+		WATCHDOG_RESET();
 		len = info->start[0] + info->size - addr;
 		if (len > cnt)
 			len = cnt;

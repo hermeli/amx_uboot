@@ -132,12 +132,14 @@ int ftstc (int file)
 
 void fputc (int file, const char c)
 {
+	WATCHDOG_RESET();
 	if (file < MAX_FILES)
 		stdio_devices[file]->putc (c);
 }
 
 void fputs (int file, const char *s)
 {
+	WATCHDOG_RESET();
 	if (file < MAX_FILES)
 		stdio_devices[file]->puts (s);
 }

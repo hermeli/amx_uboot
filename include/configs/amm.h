@@ -72,7 +72,7 @@
 #include <config_cmd_default.h>
 #undef CONFIG_CMD_BDI
 #undef CONFIG_CMD_IMI
-#undef CONFIG_CMD_AUTOSCRIPT
+#define CONFIG_CMD_AUTOSCRIPT	1
 #undef CONFIG_CMD_FPGA
 #undef CONFIG_CMD_LOADS
 #undef CONFIG_CMD_IMLS
@@ -128,14 +128,26 @@
 #define CFG_ENV_OFFSET		0x40000
 #define CFG_ENV_ADDR		(PHYS_FLASH_1 + CFG_ENV_OFFSET)
 #define CFG_ENV_SIZE		0x20000
-#define CONFIG_BOOTCOMMAND	"cp.b 0x10040000 0x72000000 0x200000; bootm"
-#define CONFIG_BOOTARGS		"console=ttyS0,115200 "			\
-				"root=/dev/mtdblock4 "			\
-				"mtdparts=physmap-flash.0:16k(bootstrap)ro,"\
-				"16k(env),224k(uboot)ro,-(linux);"	\
-				"at91_nor:-(root) "			\
-				"rw rootfstype=jffs2"
 
+#define CONFIG_BOOTCOMMAND	"if test -n ${doinstall}; then run bootscrinstall; else run bootdefault; fi"
+#define CONFIG_BOOTARGS		"console=ttyS0,115200 "			\
+				"mtdparts=physmap-flash.0:4M(bootstrap)ro,60M(roofs) "\
+				"root=1f01 rw "			\
+				"rootfstype=jffs2"
+#define CONFIG_EXTRA_ENV_SETTINGS "doinstall=1\0" \
+				  "iscript=setenv.bin\0" \
+				  "kernel=uImage.bin\0" \
+				  "rootfs=rootfs.tar.bz2\0" \
+				  "autoload=no\0" \
+				  "tftpserverip=192.168.2.29\0" \
+				  "bootdefault=cp.b 0x10060000 0x22200000 0x200000; bootm 0x22200000\0" \
+				  "bootscrinstall=dhcp; setenv serverip ${tftpserverip}; run tftpinstallscript\0" \
+				  "bootinstall=dhcp; setenv serverip ${tftpserverip}; run tftpinstallkernel\0" \
+				  "tftpinstallscript=tftp 0x21000000 ${iscript} && autoscr 0x21000000\0" \
+				  "tftpinstallkernel=tftp 0x21000000 ${kernel} && cp.b 0x21000000 0x10060000 ${filesize} && run tftpinstallrootfs\0" \
+				  "tftpinstallrootfs=tftp 0x21000000 ${rootfs} && cp.b 0x21000000 0x10400000 ${filesize} && echo FINISHED\0" \
+				  ""
+#define CONFIG_ETHADDR          00:01:02:03:04:05
 
 #define CONFIG_BAUDRATE		115200
 #define CFG_BAUDRATE_TABLE	{115200 , 19200, 38400, 57600, 9600 }
@@ -158,6 +170,19 @@
 
 #ifdef CONFIG_USE_IRQ
 #error CONFIG_USE_IRQ not supported
+#endif
+
+/*
+ * Miscellaneous configurable options
+ */
+#define CFG_HUSH_PARSER		1
+#define CFG_PROMPT_HUSH_PS2	"> "
+
+#define CFG_LONGHELP				/* undef to save memory		*/
+#ifdef CFG_HUSH_PARSER
+#define CFG_PROMPT		"$ "		/* Monitor Command Prompt */
+#else
+#define CFG_PROMPT		"=> "		/* Monitor Command Prompt */
 #endif
 
 #endif
