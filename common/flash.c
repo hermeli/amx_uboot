@@ -159,8 +159,8 @@ flash_write (char *src, ulong addr, ulong cnt)
 		ulong b_end = info->start[0] + info->size;	/* bank end addr */
 		short s_end = info->sector_count - 1;
 		for (i=0; i<info->sector_count; ++i) {
-			WATCHDOG_RESET();
 			ulong e_addr = (i == s_end) ? b_end : info->start[i + 1];
+			WATCHDOG_RESET();
 
 			if ((end >= info->start[i]) && (addr < e_addr) &&
 			    (info->protect[i] != 0) ) {
