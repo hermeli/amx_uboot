@@ -140,12 +140,12 @@
 				  "kernel=uImage.bin\0" \
 				  "rootfs=rootfs.tar.bz2\0" \
 				  "autoload=no\0" \
-				  "tftpserverip=192.168.2.29\0" \
-				  "bootdefault=cp.b 0x10060000 0x22200000 0x200000; bootm 0x22200000\0" \
-				  "bootscrinstall=dhcp; setenv serverip ${tftpserverip}; run tftpinstallscript\0" \
-				  "bootinstall=dhcp; setenv serverip ${tftpserverip}; run tftpinstallkernel\0" \
+				  "serverip=192.168.50.1\0" \
+				  "bootdefault=cp.b 0x10080000 0x22200000 0x200000; bootm 0x22200000\0" \
+				  "bootscrinstall=dhcp; run tftpinstallscript\0" \
+				  "bootinstall=dhcp; run tftpinstallkernel\0" \
 				  "tftpinstallscript=tftp 0x21000000 ${iscript} && autoscr 0x21000000\0" \
-				  "tftpinstallkernel=tftp 0x21000000 ${kernel} && cp.b 0x21000000 0x10060000 ${filesize} && run tftpinstallrootfs\0" \
+				  "tftpinstallkernel=tftp 0x21000000 ${kernel} && cp.b 0x21000000 0x10080000 ${filesize} && run tftpinstallrootfs\0" \
 				  "tftpinstallrootfs=tftp 0x21000000 ${rootfs} && cp.b 0x21000000 0x10400000 ${filesize} && echo FINISHED\0" \
 				  ""
 #define CONFIG_ETHADDR          00:01:02:03:04:05
